@@ -1,7 +1,4 @@
 const mongoose = require("mongoose");
-const { boolean } = require("webidl-conversions");
-
-
 userSchema = new mongoose.Schema({
     name : {
         type : String,
@@ -34,7 +31,7 @@ userSchema = new mongoose.Schema({
         default : "voter"
     },
     isVoted : {
-        type : boolean,
+        type : Boolean,
         default : false
     }
 });
