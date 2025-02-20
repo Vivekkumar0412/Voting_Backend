@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 userSchema = new mongoose.Schema({
     name : {
         type : String,
@@ -15,13 +16,13 @@ userSchema = new mongoose.Schema({
     adharNumber : {
         type : Number,
         required : true,
-        unique : true
+        // unique : true
     },
     mobile : {
         type : Number,
         required : true
     },
-    pasword : {
+    password : {
         type : String,
         required :true
     },
@@ -35,6 +36,30 @@ userSchema = new mongoose.Schema({
         default : false
     }
 });
+
+userSchema.pre('save', async function(next){
+    if(!this.isModified('password')) return next();
+    try {
+        // console.log("inside preee")
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password,salt);
+        console.log(this.password,"password")
+        return next();
+    } catch (error) {
+        return next(error);
+    }
+});
+
+
+userSchema.methods.comparePassword = async function(userPassword){
+    try {
+        const isMatch = await bcrypt.compare(userPassword,this.password);
+        console.log(userPassword,"userPassword in pree")
+        return isMatch;
+    } catch (error) {
+        resizeBy.status(404).json({msg : "password did not match !!!" })
+    }
+}
 
 
 const userModel = mongoose.model("userModel", userSchema);
