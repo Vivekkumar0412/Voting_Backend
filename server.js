@@ -6,11 +6,13 @@ const PORT = process.env.PORT;
 const app = express();
 app.use(express.json());
 const userRouter = require("./Routes/userRouter");
+const candidateRouter = require("./Routes/candidateRoute");
 
 app.get("/",(req,res)=>{
     res.send("hiiii")
 })
 app.use("/user",userRouter);
+app.use("/candidate",candidateRouter);
 
 
 app.listen(PORT,()=>{
