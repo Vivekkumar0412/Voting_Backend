@@ -61,5 +61,56 @@ router.delete("/:candidateId", verifyJwtTokenMiddleware,async function(req,res){
    } catch (error) {
         res.send(error)
    }
-})
+});
+
+router.post("/vote/:candidateId", verifyJwtTokenMiddleware,async function(req,res){
+    const userId = req.decodedData.id;
+    const candidateId = req.params.candidateId;
+    console.log(candidateId,"   candidateId in vote")
+    try {
+
+        // candidate find
+        const candidate = await Candidate.findById(candidateId)
+        if(!candidate){
+            return res.status(404).json({msg : "No candidate found !!!"})
+        };
+        // user find
+        const user = await User.findById(userId);
+        if(!user || user.role == "admin"){
+            return res.status(404).json({msg : "No user found !! or admin cant vote"})
+        };
+        if(user.isVoted){
+            return res.status(403).json({msg : "user has alredy voted !!!"})
+        }
+
+
+        // candidate vote update 
+        candidate.votes.push({
+            user : userId
+        });
+        candidate.voteCount++; 
+        await candidate.save();
+
+        // user vote update
+        user.isVoted = true;
+        await user.save();
+
+        res.status(200).json({msg : "voting completed !!"})
+
+    } catch (error) {
+        res.status(404).json({msg : error});   
+    }
+});
+
+
+router.get("/voteCount",async function(req,res){
+    const candidate = await Candidate.find().sort({voteCount : 'desc'});
+    const result = candidate.map((data)=>{
+        return {
+            part : data.party,
+            votes : data.voteCount
+        }
+    });
+    res.status(200).json({msg : result});
+} )
 module.exports = router;
