@@ -9,7 +9,6 @@ router.post("/signup", async function (req, res) {
     let data = req.body;
     console.log(req.body, "req.body");
     let response = await User(data);
-    console.log(response, "response");
     await response.save();
     const payLoad = {
       id: response.id,
