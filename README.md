@@ -51,7 +51,7 @@ This is a backend application for a voting system where users can vote for candi
 
 ## Voting
 
-### Get Vote Count
+### Get Vote Counts
 - `GET /candidates/vote/count`: Get the count of votes for each candidate
 
 ### Vote for Candidate
