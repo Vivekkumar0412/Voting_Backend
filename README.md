@@ -49,7 +49,7 @@ This is a backend application for a voting system where users can vote for candi
 ### Delete Candidate
 - `DELETE /candidates/:id`: Delete a candidate by ID (Admin only)
 
-## Voting
+## Votings
 
 ### Get Vote Counts
 - `GET /candidates/vote/count`: Get the count of votes for each candidate
