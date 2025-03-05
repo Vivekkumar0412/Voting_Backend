@@ -35,7 +35,7 @@ This is a backend application for a voting system where users can vote for candi
 ### Login
 - `POST /login`: Login a user
 
-## Candidates
+## Candidate
 
 ### Get Candidate
 - `GET /candidates`: Get the list of candidates
